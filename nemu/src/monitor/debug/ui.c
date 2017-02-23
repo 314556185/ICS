@@ -87,6 +87,21 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+	char *arg1 = strtok(NULL, " ");
+	int n = atoi(arg1);
+	char *arg2 = strtok(NULL, " ");
+	uint32_t p ;
+	sscanf(arg2,"%x" ,&p);
+	int i=1,j=1;
+	for(i=1 ; i <= n ; i++)
+	{
+		printf("%x :",p);
+		for(j=1 ; j <= 4 ; j++,p++)
+		{
+			printf("%2x , ",swaddr_read(p,1));
+		}
+		printf("\n");
+	}
 	return 0;
 }
 
