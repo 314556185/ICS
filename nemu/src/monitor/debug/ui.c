@@ -92,12 +92,14 @@ static int cmd_x(char *args) {
 	char *arg2 = strtok(NULL, " ");
 	uint32_t p ;
 	sscanf(arg2,"%x" ,&p);
-	int i;
+	int i,j;
 	for(i=1 ; i<=n ; i++)
 	{
 		printf("%x : ",p);
-		printf("%2x  ",swaddr_read(p,4));
-		p+=4;
+		for(j=0;j<=4;j++,p++)
+		{
+		printf("%2x\t",swaddr_read(p,1));
+		}
 		printf("\n");
 	}
 	return 0;
