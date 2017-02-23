@@ -69,7 +69,7 @@ static int cmd_info(char *args) {
 			printf("%8x\t%8x",cpu.gpr[i]._32,cpu.gpr[i]._16);
 			if(i<4)
 			{
-				printf("%8x\t%8x",cpu.gpr[i]._8[0],cpu.gpr[i]._8[1]);
+				printf("\t%8x\t%8x\n",cpu.gpr[i]._8[0],cpu.gpr[i]._8[1]);
 			}
 		}
 	}
