@@ -37,10 +37,26 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
+	char *arg = strtok(NULL, " ");
 	int t;
-	t=atoi(args);
-	cpu_exec(t);
-	return 0 ;
+	if(arg == NULL)
+	{
+		cpu_exec(1);
+		return 0;
+	}
+	else {
+		t=atoi(arg);
+		if(t==-1)
+		{
+			printf("Error input!");
+			return -1;
+		}
+		else 
+		{
+			cpu_exec(t);
+			return 0 ;
+		}
+	}
 }
 
 static int cmd_info(char *args) {
