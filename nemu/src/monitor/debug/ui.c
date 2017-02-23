@@ -74,7 +74,6 @@ static int cmd_info(char *args) {
 			}
 			printf("\n");
 		}
-		printf("eax:%8x,ecx:%8x,edx:%8x,ebx:%8x\nesp:%8x,ebp:%8x,esi:%8x,edi:%8x\n",cpu.eax,cpu.ecx,cpu.edx,cpu.ebx,cpu.esp,cpu.ebp,cpu.esi,cpu.edi);
 		printf("eip:%8x\n",cpu.eip);
 	}
 	return 0;
