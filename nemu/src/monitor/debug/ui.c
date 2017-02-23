@@ -46,9 +46,9 @@ static int cmd_si(char *args) {
 	}
 	else {
 		t=atoi(arg);
-		if(t==-1)
+		if(t==-1||t==0)
 		{
-			printf("Error input!\n");
+			printf("Unknown command!\n");
 			return -1;
 		}
 		else 
