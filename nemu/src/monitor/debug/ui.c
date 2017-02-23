@@ -96,8 +96,8 @@ static int cmd_x(char *args) {
 	for(i=1 ; i<=n ; i++)
 	{
 		printf("%x: ",p);
-		printf("%2x\t",swaddr_read(p,4));
-		p+=4;
+		printf("%x",swaddr_read(p,4));
+		p+=5;
 		printf("\n");
 	}
 	return 0;
