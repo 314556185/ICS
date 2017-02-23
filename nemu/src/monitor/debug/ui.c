@@ -38,18 +38,25 @@ static int cmd_q(char *args) {
 
 static int cmd_si(char *args) {
 	char *arg = strtok(NULL, " ");
-	int t;
+	int t = atoi(arg);
 	if(arg == NULL)
 	{
 		cpu_exec(1);
 		return 0;
 	}
 	else {
-		t=atoi(arg);
-		if(t<=0)
+		if(t <= 0)
 		{
+			if(t == -1)
+			{
+				cpu_exec(-1);
+				return 0 ;
+			}
+			else
+			{
 			printf("Unknown command!\n");
 			return -1;
+			}
 		}
 		else 
 		{
@@ -80,7 +87,6 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-
 	return 0;
 }
 
