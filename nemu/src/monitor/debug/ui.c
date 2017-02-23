@@ -95,10 +95,10 @@ static int cmd_x(char *args) {
 	int i,j;
 	for(i=1 ; i<=n ; i++)
 	{
-		printf("%x : ",p);
+		printf("%x: ",p);
 		for(j=0;j<=4;j++,p++)
 		{
-		printf("%2x\t",swaddr_read(p,1));
+		printf("%2x\t",swaddr_read(p,4));
 		}
 		printf("\n");
 	}
