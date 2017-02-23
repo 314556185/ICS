@@ -48,7 +48,7 @@ static int cmd_si(char *args) {
 		t=atoi(arg);
 		if(t==-1)
 		{
-			printf("Error input!");
+			printf("Error input!\n");
 			return -1;
 		}
 		else 
