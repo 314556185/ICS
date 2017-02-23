@@ -46,7 +46,7 @@ static int cmd_si(char *args) {
 	}
 	else {
 		t=atoi(arg);
-		if(t==-1||t==0)
+		if(t<=0)
 		{
 			printf("Unknown command!\n");
 			return -1;
