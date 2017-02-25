@@ -39,7 +39,7 @@ static int cmd_q(char *args) {
 static int cmd_si(char *args) {
 	char *arg = strtok(NULL, " ");
 	int t = atoi(arg);
-	if(arg == NULL)
+	if(strcmp(arg,"NULL")==0)
 	{
 		cpu_exec(1);
 		return 0;
