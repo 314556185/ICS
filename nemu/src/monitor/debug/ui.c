@@ -67,21 +67,11 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
-	int i;
 	char *arg = strtok(NULL, " ");
-	printf("cpu_32\t\t   cpu_16\t\t    cpu_8\n");
 	if(strcmp(arg,"r") == 0)
 	{
-		for(i=0;i<8;i++)
-		{
-			printf("%8x\t%8x",cpu.gpr[i]._32,cpu.gpr[i]._16);
-			if(i<4)
-			{
-				printf("\t%8x\t%8x",cpu.gpr[i]._8[0],cpu.gpr[i]._8[1]);
-			}
-			printf("\n");
-		}
-		printf("eip:%8x\n",cpu.eip);
+		printf("eax: %8x\necx: %8x\nedx: %8x\nebx: %8x\nesp: %8x\nebp: %8x\nesi: %8x\nedi: %8x\n",cpu.eax,cpu.ecx,cpu.edx,cpu.ebx,cpu.esp,cpu.ebp,cpu.esi,cpu.edi);	
+		printf("eip: %8x\n",cpu.eip);
 	}
 	return 0;
 }
