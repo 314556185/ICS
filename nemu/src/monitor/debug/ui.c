@@ -45,8 +45,7 @@ static int cmd_si(char *args) {
 		return 0;
 	}
 	else {
-		if(t <= 0)
-		{
+		if(t <= 0)		{
 			if(t == -1)
 			{
 				cpu_exec(-1);
@@ -55,7 +54,7 @@ static int cmd_si(char *args) {
 			else
 			{
 			printf("Unknown command!\n");
-			return -1;
+			return 0;
 			}
 		}
 		else 
@@ -70,7 +69,8 @@ static int cmd_info(char *args) {
 	char *arg = strtok(NULL, " ");
 	if(strcmp(arg,"r") == 0)
 	{
-		printf("eax: %8x\necx: %8x\nedx: %8x\nebx: %8x\nesp: %8x\nebp: %8x\nesi: %8x\nedi: %8x\n",cpu.eax,cpu.ecx,cpu.edx,cpu.ebx,cpu.esp,cpu.ebp,cpu.esi,cpu.edi);	
+		printf("eax: %8x\necx: %8x\nedx: %8x\nebx: %8x\nesp: %8x\nebp: %8x\nesi: %8x\nedi: %8x\n",
+				cpu.eax,cpu.ecx,cpu.edx,cpu.ebx,cpu.esp,cpu.ebp,cpu.esi,cpu.edi);	
 		printf("eip: %8x\n",cpu.eip);
 	}
 	return 0;
