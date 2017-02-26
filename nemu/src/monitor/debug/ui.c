@@ -70,7 +70,7 @@ static int cmd_info(char *args) {
 	char *arg = strtok(NULL, " ");
 	if(strcmp(arg,"r") == 0)
 	{
-		printf("eax: %8x\necx: %8x\nedx: %8x\nebx: %8x\nesp: %8x\nebp: %8x\nesi: %8x\nedi: %8x\n",
+		printf("eax:0x%8x\necx: 0x%8x\nedx: 0x%8x\nebx: 0x%8x\nesp: 0x%8x\nebp: 0x%8x\nesi: 0x%8x\nedi: 0x%8x\n",
 				cpu.eax,cpu.ecx,cpu.edx,cpu.ebx,cpu.esp,cpu.ebp,cpu.esi,cpu.edi);	
 		printf("eip: %8x\n",cpu.eip);
 	}
