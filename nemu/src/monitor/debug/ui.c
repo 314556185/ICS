@@ -95,6 +95,19 @@ static int cmd_x(char *args) {
 	}
 	return 0;
 }
+static int cmd_p(char *args) {
+	if(args==NULL) {
+		printf("Nothing in the expression!\n");
+		assert(0);
+	}
+	bool *suc;
+	uint32_t res=0;
+	suc=malloc(sizeof(bool));
+	*suc=true;
+	res=expr(args,suc);
+	printf("0x%x(%u)\n",res,res);
+	return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -109,6 +122,7 @@ static struct {
 	{ "si", "Single implement", cmd_si},
 	{ "info", "Type the information of register", cmd_info},
 	{ "x", "Scanning the memory", cmd_x},
+	{ "p", "Expression evaluation", cmd_p},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
