@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND
+	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND
 
 	/* TODO: Add more token types */
 
@@ -21,28 +21,28 @@ static struct rule {
 	/* TODO: Add more rules.
 	 * Pay attention to the precedence level of different rules.
 	 */
-    {"-",SUB},
-	{"\\*",MUL},
-	{"/",DIV},
-	{"\\(",LP},
-	{"\\)",RP},
-	{"0x[0-9a-fA-F]{1,31}",HEX},
-    {"[0-9]{1,31}",NUM},
-	{">>",RSHIFT},
-	{"<<",LSHIFT},
-	{"\\|\\|",EITHER},
-	{"&&",BOTH},
-	{">=",BE},
-	{"<=",SE},
-	{">",BIG},
-	{"<",SMALL},
-    {"\\|",OR},
-	{"&",AND},
-	{"\\$[A-Za-z]{1,7}",REG},
-	{"!=",NEQ},
-	{" +",	NOTYPE},				// spaces
-	{"\\+", '+'},					// plus
-	{"==", EQ}						// equal
+    {"-", SUB},
+	{"\\*", MUL},
+	{"/", DIV},
+	{"\\(", LP},
+	{"\\)", RP},
+	{"0x[0-9a-fA-F]{1,31}", HEX},
+    {"[0-9]{1,31}", NUM},
+	{">>", RSHIFT},
+	{"<<", LSHIFT},
+	{"\\|\\|", EITHER},
+	{"&&", BOTH},
+	{">=", BE},
+	{"<=", SE},
+	{">", BIG},
+	{"<", SMALL},
+    {"\\|", OR},
+	{"&", AND},
+	{"\\$[A-Za-z]{1,7}", REG},
+	{"!=", NEQ},
+	{" +", NOTYPE},				// spaces
+	{"\\+",ADD},					// plus
+	{"==",EQ},						// equal
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -168,7 +168,7 @@ static bool make_token(char *e) {
                                  break;
 					case EITHER :
 							     nr_token++;
-							     tokens[nr_token].type=BOTH;
+							     tokens[nr_token].type=EITHER;
 							     break;
 					case BOTH :
 							     nr_token++;
@@ -208,19 +208,17 @@ static bool make_token(char *e) {
 								 break; 
 					default: panic("please implement me");
 				}
-
 				break;
 			}
 		}
-
 		if(i == NR_REGEX) {
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
-			return false;
-	
+			return false;	
 		}
 	}
 	return true; 
 }
+
 int check_parentheses(int p,int q) {
 	int flag=1,i=p,fi=0;
 	while(i<=q) {

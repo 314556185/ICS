@@ -105,7 +105,7 @@ static int cmd_p(char *args) {
 	suc=malloc(sizeof(bool));
 	*suc=true;
 	res=expr(args,suc);
-	printf("0x%x(%u)\n",res,res);
+	printf("0x%x (%u)\n",res,res);
 	return 0;
 }
 
