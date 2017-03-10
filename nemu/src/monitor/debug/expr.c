@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR,NOT,NEITHER,VAL
+	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR,NOT,NEITHER
 	/* TODO: Add more token types */
 
 };
@@ -45,7 +45,6 @@ static struct rule {
 	{"\\^", XOR},
 	{"~", NOT},
 	{"!", NEITHER},
-	{"=", VAL},
 	{" +", NOTYPE},				// spaces
 	{"\\+",ADD},				// plus
 	{"==",EQ},					// equal
@@ -228,10 +227,6 @@ static bool make_token(char *e) {
 								 nr_token++;
 								 tokens[nr_token].type=NEITHER;
 								 break;
-					case VAL :
-								 nr_token++;
-								 tokens[nr_token].type=VAL;
-								 break;
 					default: panic("please implement me");
 				}
 				break;
@@ -297,7 +292,7 @@ uint32_t chtonum(int p) {
 
 int op(int p,int q) {
 	int fi=0,i,op=-1;
-	int pos1=-1;    // last =
+	int pos1=-1;    // last ==
 	int pos2=-1;    // last ||
 	int pos3=-1;    // last &&
 	int pos4=-1;    // last == or !=
@@ -314,7 +309,7 @@ int op(int p,int q) {
 			fi--;
 		if(fi==0)
 		{
-			if (tokens[i].type==VAL)
+			if (tokens[i].type==EQ)
 				pos1=i;
 			else if(tokens[i].type ==EITHER)
 				pos2=i;
