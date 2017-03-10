@@ -355,13 +355,13 @@ uint32_t eval(int p,int q) {
 		if(opp==p) {
 			uint32_t end=q;
 			if(tokens[opp].type==NOT)
-				return ~end;
+				return (~end);
 		    if(tokens[opp].type==NEITHER)
-				return !end;
+				return (!end);
 			if(tokens[opp].type==MINUS)
 			{
-				sscanf(tokens[q].str,"%x",&end);
-				return -end;
+				sscanf(tokens[q].str,"%d",&end);
+				return (-end);
 			}
 			if(tokens[opp].type==DEREF)
 			{
