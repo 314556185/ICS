@@ -43,7 +43,7 @@ static struct rule {
 	{"\\*", DEREF},
 	{"-", MINUS},
 	{"%", MOD},
-	{"^", XOR},
+	{"\\^", XOR},
 	{"~", NOT},
 	{"!", NEITHER},
 	{" +", NOTYPE},				// spaces
