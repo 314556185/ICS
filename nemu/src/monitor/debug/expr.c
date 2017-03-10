@@ -309,22 +309,22 @@ int op(int p,int q) {
 			fi--;
 		if(fi==0)
 		{
-			if (tokens[i].type==EQ)
+			if(tokens[i].type==EQ)
 				pos1=i;
 			else if(tokens[i].type ==EITHER)
 				pos2=i;
 			else if(tokens[i].type ==BOTH)
-                pos3 = i ;
+                pos3=i;
             else if(tokens[i].type==EQ||tokens[i].type==NEQ)
-				pos4 = i;
+				pos4=i;
 			else if(tokens[i].type==SE||tokens[i].type==BE||tokens[i].type ==SMALL||tokens[i].type==BIG)
-				pos5 = i;
+				pos5=i;
             else if(tokens[i].type==LSHIFT||tokens[i].type==RSHIFT)
-				pos6 = i ;
+				pos6=i;
 			else if(tokens[i].type ==ADD||tokens[i].type==SUB)
-				pos7 = i ;
+				pos7=i;
 			else if(tokens[i].type==MUL||tokens[i].type==DIV)
-				pos8 = i ;
+				pos8=i;
 		}
 		else if(fi<0)
 			return -2;
@@ -342,7 +342,7 @@ int op(int p,int q) {
 
 uint32_t eval(int p,int q) {
 	int opp;
-	uint32_t end=q;
+	uint32_t end;
 	if(p>q) {
 		printf("Bad Expression!\n");
 	    return 0;
@@ -362,9 +362,15 @@ uint32_t eval(int p,int q) {
 		}
 		else if(opp==-1) {
 			if(tokens[p].type==NOT)
+			{
+				sscanf(tokens[q].str,"%x",&end);
 				return ~end;
+			}
 		    if(tokens[p].type==NEITHER)
+			{
+				sscanf(tokens[q].str,"%x",&end);
 				return !end;
+			}
 			if(tokens[p].type==MINUS)
 			{
 				sscanf(tokens[q].str,"%x",&end);
