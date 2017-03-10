@@ -292,7 +292,6 @@ uint32_t chtonum(int p) {
 
 int op(int p,int q) {
 	int fi=0,i,op=-1;
-	int pos1=-1;    // last ==
 	int pos2=-1;    // last ||
 	int pos3=-1;    // last &&
 	int pos4=-1;    // last == or !=
@@ -309,11 +308,9 @@ int op(int p,int q) {
 			fi--;
 		if(fi==0)
 		{
-			if(tokens[i].type==EQ)
-				pos1=i;
-			else if(tokens[i].type ==EITHER)
+		   	if(tokens[i].type==EITHER)
 				pos2=i;
-			else if(tokens[i].type ==BOTH)
+			else if(tokens[i].type==BOTH)
                 pos3=i;
             else if(tokens[i].type==EQ||tokens[i].type==NEQ)
 				pos4=i;
@@ -329,8 +326,7 @@ int op(int p,int q) {
 		else if(fi<0)
 			return -2;
     }
-    if(pos1!=-1)   op = pos1 ;
-	else if(pos2!=-1) op=pos2 ;
+	if(pos2!=-1) op=pos2 ;
 	else if(pos3!=-1) op=pos3 ;
     else if(pos4!=-1) op=pos4 ;
 	else if(pos5!=-1) op=pos5 ;
