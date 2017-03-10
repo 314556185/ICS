@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR,NOT,NEITHER	
+	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR,NOT,NEITHER,VAL
 	/* TODO: Add more token types */
 
 };
@@ -45,6 +45,7 @@ static struct rule {
 	{"\\^", XOR},
 	{"~", NOT},
 	{"!", NEITHER},
+	{"=", VAL},
 	{" +", NOTYPE},				// spaces
 	{"\\+",ADD},				// plus
 	{"==",EQ},					// equal
@@ -227,6 +228,10 @@ static bool make_token(char *e) {
 								 nr_token++;
 								 tokens[nr_token].type=NEITHER;
 								 break;
+					case VAL :
+								 nr_token++;
+								 tokens[nr_token].type=VAL;
+								 break;
 					default: panic("please implement me");
 				}
 				break;
@@ -289,56 +294,60 @@ uint32_t chtonum(int p) {
 	}
 	return res;
 }
-int priority(int a)
-{
-	if(a==MUL||a==DIV) return 2;
-	else return 1;
-}
-int op(int p,int q) {
-	int b=0,s=0;
-	int i,fi=0,pp=p-1;
-	for(i=p;i<=q;i++) {
-		if(tokens[i].type==NUM||tokens[i].type==HEX) continue;
-		else if(tokens[i].type==LP) {
-			fi++;
-			continue;
-		}
-		else if(tokens[i].type==RP) {
-			fi--;
-			continue;
-		}
-		else if(fi>0) continue;
-		else {
-			b=tokens[i].type;
-			pp=i;
-			break;
-		}
-	}
-	fi=0;
 
-	for(i=pp+1;i<q;i++) {
-		if(tokens[i].type==NUM||tokens[i].type==HEX) continue;
-		else if(tokens[i].type==LP) {
+int op(int p,int q) {
+	int fi=0,i,op=-1;
+	int pos1=-1;    // last =
+	int pos2=-1;    // last ||
+	int pos3=-1;    // last &&
+	int pos4=-1;    // last == or !=
+	int pos5=-1;    // last <=, >=,< or > 
+	int pos6=-1;    // last <<or >>
+	int pos7=-1;    // last + or -
+	int pos8=-1;    // last / or *
+
+	for(i=p;i<=q;i++)
+	{
+		if(tokens[i].type==LP) 
 			fi++;
-			continue;
-		}
-		else if(tokens[i].type==RP) {
+		else if(tokens[i].type==RP) 
 			fi--;
-			continue;
+		if(fi==0)
+		{
+			if (tokens[i].type==VAL)
+				pos1=i;
+			else if(tokens[i].type ==EITHER)
+				pos2=i;
+			else if(tokens[i].type ==BOTH)
+                pos3 = i ;
+            else if(tokens[i].type==EQ||tokens[i].type==NEQ)
+				pos4 = i;
+			else if(tokens[i].type==SE||tokens[i].type==BE||tokens[i].type ==SMALL||tokens[i].type==BIG)
+				pos5 = i;
+            else if(tokens[i].type==LSHIFT||tokens[i].type==RSHIFT)
+				pos6 = i ;
+			else if(tokens[i].type ==ADD||tokens[i].type==SUB)
+				pos7 = i ;
+			else if(tokens[i].type==MUL||tokens[i].type==DIV)
+				pos8 = i ;
 		}
-		else if(fi>0) continue;
-		else {
-			s=tokens[i].type;
-			if(priority(b)>=priority(s)) {
-				b=s;
-				pp=i;
-			}
-		}
-	}
-	return pp;
+		else if(fi<0)
+			return -2;
+    }
+    if(pos1!=-1)   op = pos1 ;
+	else if(pos2!=-1) op=pos2 ;
+	else if(pos3!=-1) op=pos3 ;
+    else if(pos4!=-1) op=pos4 ;
+	else if(pos5!=-1) op=pos5 ;
+	else if(pos6!=-1) op=pos6 ;
+	else if(pos7!=-1) op=pos7 ;
+	else if(pos8!=-1) op=pos8 ;
+	return op;
 }
+
 uint32_t eval(int p,int q) {
 	int opp;
+	uint32_t end=q;
 	if(p>q) {
 		printf("Bad Expression!\n");
 	    return 0;
@@ -351,18 +360,22 @@ uint32_t eval(int p,int q) {
 	}
 	else if(check_parentheses(p,q)==0) {
 		opp=op(p,q);
-		if(opp==p) {
-			uint32_t end=q;
-			if(tokens[opp].type==NOT)
+		if(opp==-2)
+		{
+			printf("bad expression\n");
+			assert(0);
+		}
+		else if(opp==-1) {
+			if(tokens[p].type==NOT)
 				return ~end;
-		    if(tokens[opp].type==NEITHER)
+		    if(tokens[p].type==NEITHER)
 				return !end;
-			if(tokens[opp].type==MINUS)
+			if(tokens[p].type==MINUS)
 			{
 				sscanf(tokens[q].str,"%x",&end);
 				return -end;
 			}
-			if(tokens[opp].type==DEREF)
+			if(tokens[p].type==DEREF)
 			{
 				sscanf(tokens[q].str,"%x",&end);
 				end=swaddr_read(end,4);
