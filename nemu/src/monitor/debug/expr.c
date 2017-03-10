@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR
+	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR,NOT,NEITHER
 	
 	/* TODO: Add more token types */
 
@@ -44,6 +44,8 @@ static struct rule {
 	{"-", MINUS},
 	{"%", MOD},
 	{"^", XOR},
+	{"~", NOT},
+	{"!", NEITHER},
 	{" +", NOTYPE},				// spaces
 	{"\\+",ADD},				// plus
 	{"==",EQ},					// equal
@@ -210,14 +212,6 @@ static bool make_token(char *e) {
 								 nr_token++;
 								 tokens[nr_token].type=AND;
 								 break; 
-			        case DEREF :
-								 nr_token++;
-								 tokens[nr_token].type=DEREF;
-								 break;
-					case MINUS :
-								 nr_token++;
-								 tokens[nr_token].type=MINUS;
-								 break;
 					case MOD :
 								 nr_token++;
 								 tokens[nr_token].type=MOD;
@@ -225,6 +219,14 @@ static bool make_token(char *e) {
 					case XOR :
 								 nr_token++;
 								 tokens[nr_token].type=XOR;
+								 break;
+					case NOT :
+								 nr_token++;
+								 tokens[nr_token].type=NOT;
+								 break;
+					case NEITHER :
+								 nr_token++;
+								 tokens[nr_token].type=NEITHER;
 								 break;
 					default: panic("please implement me");
 				}
