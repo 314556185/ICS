@@ -357,7 +357,7 @@ uint32_t eval(int p,int q) {
 		opp=op(p,q);
 		if(opp==-2)
 		{
-			printf("bad expression\n");
+			printf("bad a  expression\n");
 			assert(0);
 		}
 		else if(opp==-1) {
