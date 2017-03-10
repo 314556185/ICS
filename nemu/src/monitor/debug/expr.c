@@ -292,14 +292,16 @@ uint32_t chtonum(int p) {
 
 int op(int p,int q) {
 	int fi=0,i,op=-1;
-	int pos2=-1;    // last ||
-	int pos3=-1;    // last &&
-	int pos4=-1;    // last == or !=
-	int pos5=-1;    // last <=, >=,< or > 
-	int pos6=-1;    // last <<or >>
-	int pos7=-1;    // last + or -
-	int pos8=-1;    // last / or *
-
+	int pos1=-1;    // last ||
+    int pos2=-1;    // last &&
+	int pos3=-1;    // last |
+	int pos4=-1;    // last ^
+	int pos5=-1;    // last &
+	int pos6=-1;    // last == or !=
+	int pos7=-1;    // last <=, >=,< or > 
+	int pos8=-1;    // last <<or >>
+	int pos9=-1;    // last + or -
+	int pos10=-1;    // last /,*,%
 	for(i=p;i<=q;i++)
 	{
 		if(tokens[i].type==LP) 
@@ -309,30 +311,39 @@ int op(int p,int q) {
 		if(fi==0)
 		{
 		   	if(tokens[i].type==EITHER)
-				pos2=i;
+				pos1=i;
 			else if(tokens[i].type==BOTH)
-                pos3=i;
-            else if(tokens[i].type==EQ||tokens[i].type==NEQ)
+                pos2=i;
+			else if(tokens[i].type==OR)
+				pos3=i;
+			else if(tokens[i].type==XOR)
 				pos4=i;
-			else if(tokens[i].type==SE||tokens[i].type==BE||tokens[i].type ==SMALL||tokens[i].type==BIG)
+			else if(tokens[i].type==AND)
 				pos5=i;
-            else if(tokens[i].type==LSHIFT||tokens[i].type==RSHIFT)
+            else if(tokens[i].type==EQ||tokens[i].type==NEQ)
 				pos6=i;
-			else if(tokens[i].type ==ADD||tokens[i].type==SUB)
+			else if(tokens[i].type==SE||tokens[i].type==BE||tokens[i].type ==SMALL||tokens[i].type==BIG)
 				pos7=i;
-			else if(tokens[i].type==MUL||tokens[i].type==DIV)
+            else if(tokens[i].type==LSHIFT||tokens[i].type==RSHIFT)
 				pos8=i;
+			else if(tokens[i].type ==ADD||tokens[i].type==SUB)
+				pos9=i;
+			else if(tokens[i].type==MUL||tokens[i].type==DIV||tokens[i].type==MOD)
+				pos10=i;
 		}
 		else if(fi<0)
 			return -2;
     }
-	if(pos2!=-1) op=pos2 ;
-	else if(pos3!=-1) op=pos3 ;
-    else if(pos4!=-1) op=pos4 ;
-	else if(pos5!=-1) op=pos5 ;
-	else if(pos6!=-1) op=pos6 ;
-	else if(pos7!=-1) op=pos7 ;
-	else if(pos8!=-1) op=pos8 ;
+	if(pos1!=-1) op=pos1 ;
+	else if(pos2!=-1) op=pos2;
+	else if(pos3!=-1) op=pos3;
+    else if(pos4!=-1) op=pos4;
+	else if(pos5!=-1) op=pos5;
+	else if(pos6!=-1) op=pos6;
+	else if(pos7!=-1) op=pos7;
+	else if(pos8!=-1) op=pos8;
+	else if(pos9!=-1) op=pos9;
+	else if(pos10!=-1) op=pos10;
 	return op;
 }
 
