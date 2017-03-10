@@ -359,12 +359,12 @@ uint32_t eval(int p,int q) {
 				return (!end);
 			if(tokens[opp].type==MINUS)
 			{
-				sscanf(tokens[q].str,"%d",&end);
+				sscanf(tokens[q].str,"%x",&end);
 				return (-end);
 			}
 			if(tokens[opp].type==DEREF)
 			{
-				sscanf(tokens[q].str,"%d",&end);
+				sscanf(tokens[q].str,"%x",&end);
 				end=swaddr_read(end,4);
 				return end;
 			}
