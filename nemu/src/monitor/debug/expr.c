@@ -40,7 +40,7 @@ static struct rule {
 	{"&", AND},
 	{"\\$[A-Za-z]{1,7}", REG},
 	{"!=", NEQ},
-	{"*", DEREF},
+	//{"*", DEREF},
 	{"-", MINUS},
 	{"%", MOD},
 	{" +", NOTYPE},				// spaces
