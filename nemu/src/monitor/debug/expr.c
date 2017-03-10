@@ -7,7 +7,8 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND
+	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,
+	POINTER,MINUS,MOD
 
 	/* TODO: Add more token types */
 
@@ -40,6 +41,9 @@ static struct rule {
 	{"&", AND},
 	{"\\$[A-Za-z]{1,7}", REG},
 	{"!=", NEQ},
+	{"*", POINTER},
+	{"-", MINUS},
+	{"%", MOD},
 	{" +", NOTYPE},				// spaces
 	{"\\+",ADD},					// plus
 	{"==",EQ},						// equal
@@ -206,22 +210,18 @@ static bool make_token(char *e) {
 								 nr_token++;
 								 tokens[nr_token].type=AND;
 								 break; 
-				  /*case NOT :
+					case POINTER :
 								 nr_token++;
-								 tokens[nr_token].type=NOT;
+								 tokens[nr_token].type=POINTER;
 								 break;
-					case XOR :
+					case MINUS :
 								 nr_token++;
-								 tokens[nr_token].type=XOR;
+								 tokens[nr_token].type=MINUS;
 								 break;
 					case MOD :
 								 nr_token++;
 								 tokens[nr_token].type=MOD;
 								 break;
-                    case NEITHER :
-								 nr_token++;
-								 tokens[nr_token].type=NEITHER;
-								 break;*/
 					default: panic("please implement me");
 				}
 				break;
@@ -369,6 +369,7 @@ uint32_t eval(int p,int q) {
 			case SMALL : return val1<val2;
 			case EQ : return val1==val2;
 			case NEQ : return val1!=val2;
+		    case MOD : return val1%val2;
 		    default : assert(0);
 		}
 	}
@@ -376,9 +377,18 @@ uint32_t eval(int p,int q) {
 }
 
 uint32_t expr(char *e, bool *success) {
+	int i;
 	if(!make_token(e)) {
 		*success = false;
 		return 0;
+	}
+	for(i=0;i<nr_token;i++) {
+		if(tokens[i].type==SUB&&tokens[i+1].type!=SUB&&(i==0||tokens[i-1].type==ADD||tokens[i-1].type==SUB||tokens[i].type==MUL||tokens[i].type==DIV||tokens[i].type==LP))
+			tokens[i].type=MINUS;
+	}
+	for(i=0;i<nr_token;i++) {
+		if(tokens[i].type==MUL&&(i==0||(tokens[i-1].type!=LP&&tokens[i-1].type!=HEX&&tokens[i-1].type!=NUM)))
+			tokens[i].type=POINTER;
 	}
     return eval(1,nr_token);
 	/* TODO: Insert codes to evaluate the expression. */
