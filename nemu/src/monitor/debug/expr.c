@@ -8,7 +8,7 @@
 
 enum {
 	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,
-	POINTER,MINUS,MOD
+	DEREF,MINUS,MOD
 
 	/* TODO: Add more token types */
 
@@ -41,7 +41,7 @@ static struct rule {
 	{"&", AND},
 	{"\\$[A-Za-z]{1,7}", REG},
 	{"!=", NEQ},
-	{"*", POINTER},
+	{"*", DEREF},
 	{"-", MINUS},
 	{"%", MOD},
 	{" +", NOTYPE},				// spaces
@@ -210,9 +210,9 @@ static bool make_token(char *e) {
 								 nr_token++;
 								 tokens[nr_token].type=AND;
 								 break; 
-					case POINTER :
+			        case DEREF :
 								 nr_token++;
-								 tokens[nr_token].type=POINTER;
+								 tokens[nr_token].type=DEREF;
 								 break;
 					case MINUS :
 								 nr_token++;
@@ -388,7 +388,7 @@ uint32_t expr(char *e, bool *success) {
 	}
 	for(i=0;i<nr_token;i++) {
 		if(tokens[i].type==MUL&&(i==0||(tokens[i-1].type!=LP&&tokens[i-1].type!=HEX&&tokens[i-1].type!=NUM)))
-			tokens[i].type=POINTER;
+			tokens[i].type=DEREF;
 	}
     return eval(1,nr_token);
 	/* TODO: Insert codes to evaluate the expression. */
