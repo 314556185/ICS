@@ -417,11 +417,11 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	for(i=0;i<nr_token;i++) {
-		if(tokens[i].type==SUB&&tokens[i+1].type!=SUB&&(i==0||tokens[i-1].type==ADD||tokens[i-1].type==SUB||tokens[i].type==MUL||tokens[i].type==DIV||tokens[i].type==LP))
+		if(tokens[i].type==SUB&&(i==0||tokens[i-1].type==ADD||tokens[i-1].type==SUB||tokens[i-1].type==MUL||tokens[i-1].type==DIV||tokens[i-1].type==LP))
 			tokens[i].type=MINUS;
 	}
 	for(i=0;i<nr_token;i++) {
-		if(tokens[i].type==MUL&&(i==0||(tokens[i-1].type!=LP&&tokens[i-1].type!=HEX&&tokens[i-1].type!=NUM)))
+		if(tokens[i].type==MUL&&(i==0||(tokens[i-1].type!=RP&&tokens[i-1].type!=HEX&&tokens[i-1].type!=NUM)))
 			tokens[i].type=DEREF;
 	}
     return eval(1,nr_token);
