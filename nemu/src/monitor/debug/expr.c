@@ -344,7 +344,6 @@ uint32_t eval(int p,int q) {
 	int opp;
 	uint32_t end;
 	if(p>q) {
-		printf("Bad b Expression!\n");
 	    return 0;
 	}
 	else if(p==q) {
@@ -357,7 +356,7 @@ uint32_t eval(int p,int q) {
 		opp=op(p,q);
 		if(opp==-2)
 		{
-			printf("bad a  expression\n");
+			printf("bad  expression\n");
 			assert(0);
 		}
 		else if(opp==-1) {
