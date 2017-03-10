@@ -7,8 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR,NOT,NEITHER
-	
+	NOTYPE = 256,EQ,NEQ,REG,NUM,HEX,ADD,SUB,MUL,DIV,LP,RP,LSHIFT,RSHIFT,EITHER,BOTH,BIG,SMALL,BE,SE,OR,AND,DEREF,MINUS,MOD,XOR,NOT,NEITHER	
 	/* TODO: Add more token types */
 
 };
@@ -365,7 +364,7 @@ uint32_t eval(int p,int q) {
 			}
 			if(tokens[opp].type==DEREF)
 			{
-				sscanf(tokens[q].str,"%x",&end);
+				sscanf(tokens[q].str,"%d",&end);
 				end=swaddr_read(end,4);
 				return end;
 			}
