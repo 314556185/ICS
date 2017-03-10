@@ -353,8 +353,22 @@ uint32_t eval(int p,int q) {
 	else if(check_parentheses(p,q)==0) {
 		opp=op(p,q);
 		if(opp==p) {
-			assert(0);
-			return 0;
+			uint32_t end=q;
+			if(tokens[opp].type==NOT)
+				return ~end;
+		    if(tokens[opp].type==NEITHER)
+				return !end;
+			if(tokens[opp].type==MINUS)
+			{
+				sscanf(tokens[q].str,"%x",&end);
+				return -end;
+			}
+			if(tokens[opp].type==DEREF)
+			{
+				sscanf(tokens[q].str,"%x",&end);
+				end=swaddr_read(end,4);
+				return end;
+			}
 		}
 		uint32_t val1=eval(p,opp-1);
 		uint32_t val2=eval(opp+1,q);
