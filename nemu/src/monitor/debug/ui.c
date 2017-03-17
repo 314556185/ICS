@@ -75,9 +75,7 @@ static int cmd_info(char *args) {
 		printf("eip: 0x%8x\n",cpu.eip);
 	}
 	if(strcmp(arg,"w") == 0)
-	{
 		list_watchpoint();
-	}
 	return 0;
 }
 
@@ -127,7 +125,7 @@ static int cmd_w(char *args) {
 
 static int cmd_d(char *args) {
 	int i,num;
-	if(strcmp(args,"all")==1) {
+	if(strcmp(args,"all")==0) {
 		for(i=1;i<=w_num;i++)
 			delete_watchpoint(i);
 		return 0;

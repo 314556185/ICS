@@ -76,7 +76,7 @@ void list_watchpoint() {
 	else {
 		printf("******There is the information of watchpoint******\n");
 		while(p!=NULL) {
-			printf("No.%d oldvalue:%x  newvalue:%x  ",p->NO,p->oldvalue,p->newvalue);
+			printf("No.%d   oldvalue:0x%x   newvalue:0x%x   ",p->NO,p->oldvalue,p->newvalue);
 				printf("the expression:%s\n",p->expression);
 			p=p->next;
 		}
