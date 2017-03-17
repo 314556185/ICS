@@ -8,7 +8,7 @@
 #include <readline/history.h>
 
 void cpu_exec(uint32_t);
-
+extern int w_num;
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
@@ -74,6 +74,10 @@ static int cmd_info(char *args) {
 				cpu.eax,cpu.ecx,cpu.edx,cpu.ebx,cpu.esp,cpu.ebp,cpu.esi,cpu.edi);	
 		printf("eip: 0x%8x\n",cpu.eip);
 	}
+	if(strcmp(arg,"w") == 0)
+	{
+		list_watchpoint();
+	}
 	return 0;
 }
 
@@ -108,6 +112,38 @@ static int cmd_p(char *args) {
 	printf("0x%x (%u)\n",res,res);
 	return 0;
 }
+static int cmd_w(char *args) {
+	if(args==NULL) {
+		printf("Nothing in the expression!\n");
+		assert(0);
+	}
+	if(set_watchpoint(args)==1)
+		return 0;
+	else {
+		printf("set the watchpoint error!\n");
+		return 0;
+	}
+}
+
+static int cmd_d(char *args) {
+	int i,num;
+	if(strcmp(args,"all")==1) {
+		for(i=1;i<=w_num;i++)
+			delete_watchpoint(i);
+		return 0;
+	}
+	else {
+	sscanf(args,"%d",&num);
+	if(delete_watchpoint(num)==1) {
+		printf("Delete the NO.%d watchpoint success!\n",num);
+		return 0 ;
+	}
+	else {
+		printf("Delete the NO.%d watchpoint error!\n",num);
+		return 0;
+	}
+	}
+}
 
 static int cmd_help(char *args);
 
@@ -123,6 +159,8 @@ static struct {
 	{ "info", "Type the information of register", cmd_info},
 	{ "x", "Scanning the memory", cmd_x},
 	{ "p", "Expression evaluation", cmd_p},
+	{ "w", "Set the watchpoint", cmd_w},
+	{ "d", "Delete the watchpoint", cmd_d},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))

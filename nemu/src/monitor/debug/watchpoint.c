@@ -2,7 +2,7 @@
 #include "monitor/expr.h"
 
 #define NR_WP 32
-
+int w_num=1;
 static WP wp_list[NR_WP];
 static WP *head, *free_;
 
@@ -18,6 +18,95 @@ void init_wp_list() {
 	free_ = wp_list;
 }
 
+WP* new_wp() {
+	WP *p=free_;
+	if(free_==NULL) {
+		printf("There is no wp'space!\n");
+		assert(0);
+	}
+	if(head==NULL) {
+		head=(WP*)malloc(sizeof(WP));
+		head->NO=-1;
+		head->next=NULL;
+		p=head;
+	}
+	else if(head->next==NULL) {
+		p=head;
+	}
+	else {
+		p=head;
+		while(p->next!=NULL)
+			p=p->next;
+	}
+	if(free_->next==NULL) {
+		p->next=free_;
+		free_=NULL;
+	}
+	else {
+		p->next=free_;
+		free_=free_->next;
+	}
+	p=p->next;
+	p->next=NULL;
+	return p;
+}
+
+void free_wp(WP *wp) {
+	WP *p=head;
+	if(head==wp)
+	{
+		head=head->next;
+		wp->next=free_;
+		free_=wp;
+	}
+	else {
+		while(p->next!=wp) {
+			p=p->next;
+		}
+		p->next=wp->next;
+		wp->next=free_;
+		free_=wp;
+	}
+}
+
+void list_watchpoint() {
+	scan_watchpoint();
+}
+
+int set_watchpoint(char *e) {
+	WP* p=new_wp();
+	bool *suc;
+	suc=malloc(sizeof(bool));
+	*suc=true;
+	p->expression=(char*)malloc(sizeof(strlen(e)+1));
+	strcpy(p->expression,e);
+	p->oldvalue=p->newvalue=expr(e,suc);
+	p->NO=w_num++;
+	return 1;
+}
+
+bool delete_watchpoint(int NO) {
+	WP* p=head;
+	if(NO<=w_num) {
+		while(NO) {
+			p=p->next;
+			NO--;
+		}
+		return 1;
+	}
+		else 
+			return 0;
+}
+
+WP* scan_watchpoint() {
+	WP* p=head;
+	printf("the information of watchpoint\n");
+	while(p->next!=NULL) {
+		printf("NO.%d  the expression:%s  the oldvalue:%x  the newvalue:%x\n",p->NO,p->expression,p->oldvalue,p->newvalue);
+		p=p->next;
+	}
+	return p;
+}
 /* TODO: Implement the functionality of watchpoint */
 
 
