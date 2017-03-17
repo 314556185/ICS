@@ -68,6 +68,10 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
 	char *arg = strtok(NULL, " ");
+	if(arg==NULL) {
+		printf("enter error!\n");
+		return 0;
+	}
 	if(strcmp(arg,"r") == 0)
 	{
 		printf("eax:0x%8x\necx: 0x%8x\nedx: 0x%8x\nebx: 0x%8x\nesp: 0x%8x\nebp: 0x%8x\nesi: 0x%8x\nedi: 0x%8x\n",
@@ -126,7 +130,7 @@ static int cmd_w(char *args) {
 static int cmd_d(char *args) {
 	int i,num;
 	if(strcmp(args,"all")==0) {
-		for(i=1;i<=w_num;i++)
+		for(i=1;i<w_num;i++)
 			delete_watchpoint(i);
 		return 0;
 	}
