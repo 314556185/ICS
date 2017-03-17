@@ -2,7 +2,7 @@
 #include "monitor/expr.h"
 
 #define NR_WP 32
-int w_num=1;
+int w_num=0;
 static WP wp_list[NR_WP];
 static WP *head, *free_;
 
@@ -70,7 +70,8 @@ void free_wp(WP *wp) {
 }
 
 void list_watchpoint() {
-	scan_watchpoint();
+	if(scan_watchpoint()==NULL)
+		assert(0);
 }
 
 int set_watchpoint(char *e) {
@@ -100,12 +101,18 @@ bool delete_watchpoint(int NO) {
 
 WP* scan_watchpoint() {
 	WP* p=head;
-	printf("the information of watchpoint\n");
+	if(head==NULL||head->next==NULL) {
+		printf("There is no watchpoint!\n");
+		return NULL;
+	}
+	else {
+	printf("***********the information of watchpoint***********\n");
 	while(p->next!=NULL) {
 		printf("NO.%d  the expression:%s  the oldvalue:%x  the newvalue:%x\n",p->NO,p->expression,p->oldvalue,p->newvalue);
 		p=p->next;
 	}
-	return p;
+	return head;
+	}
 }
 /* TODO: Implement the functionality of watchpoint */
 
