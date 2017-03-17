@@ -16,7 +16,6 @@ WP* new_wp();
 int set_watchpoint(char *e);
 void free_wp(WP *wp);
 bool delete_watchpoint(int NO);
-WP* scan_watchpoint();
 void list_watchpoint();
 
 #endif

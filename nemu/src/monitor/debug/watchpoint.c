@@ -70,10 +70,16 @@ void free_wp(WP *wp) {
 }
 
 void list_watchpoint() {
+	WP* p=head;
 	if(head==NULL||head->next==NULL)
 		printf("There is no watchpoint!\n");
-	else
-		scan_watchpoint();
+	else {
+		printf("******There is the information of watchpoint******\n");
+		while(p!=NULL) {
+			printf("No.%d  expression:%s  oldvalue:%x  newvalue:%x\n",p->NO,p->expression,p->oldvalue,p->newvalue);
+			p=p->next;
+		}
+	}
 }
 
 int set_watchpoint(char *e) {
@@ -104,15 +110,6 @@ bool delete_watchpoint(int NO) {
 	}
 		else 
 			return 0;
-}
-
-WP* scan_watchpoint() {
-	WP* p=head;
-	while(p->next!=NULL) {
-		printf("NO.%d  the expression:%s  the oldvalue:%x  the newvalue:%x\n",p->NO,p->expression,p->oldvalue,p->newvalue);
-		p=p->next;
-	}
-	return p;
 }
 /* TODO: Implement the functionality of watchpoint */
 
