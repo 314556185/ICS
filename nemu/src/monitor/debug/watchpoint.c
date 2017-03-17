@@ -2,7 +2,7 @@
 #include "monitor/expr.h"
 
 #define NR_WP 32
-int w_num=0;
+int w_num=1;
 static WP wp_list[NR_WP];
 static WP *head, *free_;
 
@@ -77,10 +77,9 @@ void list_watchpoint() {
 		printf("******There is the information of watchpoint******\n");
 		while(p!=NULL) {
 			printf("No.%d oldvalue:%x  newvalue:%x  ",p->NO,p->oldvalue,p->newvalue);
-			/*while(p->expression!='\0') {
-				printf("%c",p->expression);
-				p->expression++;
-			}*/
+			//while(p->expression!='\0') {
+				printf("%s",p->expression);
+			//	p->expression++;
 			p=p->next;
 		}
 	}
