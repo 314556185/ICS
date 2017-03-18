@@ -18,4 +18,5 @@ void free_wp(WP *wp);
 bool delete_watchpoint(int NO);
 void list_watchpoint();
 int check_watchpoint();
+void cpu_exec(uint32_t n);
 #endif
