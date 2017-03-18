@@ -118,6 +118,7 @@ int check_watchpoint() {
 	WP *p=head->next;
 	bool *suc=(bool*)true;
 	while(p!=NULL) {
+		p->oldvalue=p->newvalue;
 		value=expr(p->expression,suc);
 		if(p->oldvalue!=value) {
 			p->newvalue=value;
