@@ -97,19 +97,19 @@ int set_watchpoint(char *e) {
 
 bool delete_watchpoint(int NO) {
 	WP* p=head;
-	if(NO<=w_num) {
-		while(p->NO!=NO||p->next!=NULL) {
-			p=p->next;
-		}
-		if(p->next!=NULL) { 
-			free_wp(p);
-			return 1;
-		}
-		else 			
-		return 0;
+	WP* q=head;
+	int flag=0;
+	while(p) {
+		if(p->NO==NO)
+			flag=1;
+		p=p->next;
 	}
-		else 
-			return 0;
+	if(NO>w_num||flag==0)
+		return 0;
+	while(q->NO!=NO) 
+		q=q->next;
+	free_wp(q);
+	return 1;
 }
 
 int check_watchpoint() {
