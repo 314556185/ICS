@@ -101,8 +101,12 @@ bool delete_watchpoint(int NO) {
 		while(p->NO!=NO) {
 			p=p->next;
 		}
-		free_wp(p);
-		return 1;
+		if(p!=head) { 
+			free_wp(p);
+			return 1;
+		}
+		else			
+		return 0;
 	}
 		else 
 			return 0;
