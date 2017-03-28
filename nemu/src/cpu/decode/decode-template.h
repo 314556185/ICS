@@ -32,8 +32,9 @@ make_helper(concat(decode_si_, SUFFIX)) {
 	 *
 	op_src->simm = ???
 	 */
-	panic("please implement me");
-
+	int32_t raw_data = instr_fetch(eip,DATA_BYTE);
+	int32_t step = 32 -8 * DATA_BYTE;
+	op_src->simm = raw_data << step >>step;
 	op_src->val = op_src->simm;
 
 #ifdef DEBUG
