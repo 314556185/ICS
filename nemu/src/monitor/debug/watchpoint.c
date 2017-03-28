@@ -115,18 +115,22 @@ bool delete_watchpoint(int NO) {
 int check_watchpoint() {
 	uint32_t value;
 	int flag=0;
-	WP *p=head->next;
-	bool *suc=(bool*)true;
-	while(p!=NULL) {
-		p->oldvalue=p->newvalue;
-		value=expr(p->expression,suc);
-		if(p->oldvalue!=value) {
-			p->newvalue=value;
-			flag=1;
-		}
-		p=p->next;
-	}
+	if(head==NULL)
+		return 0;
+	else {
+		WP *p=head->next;
+		bool *suc=(bool*)true;
+		while(p!=NULL) {
+			p->oldvalue=p->newvalue;
+			value=expr(p->expression,suc);
+			if(p->oldvalue!=value) {
+				p->newvalue=value;
+				flag=1;
+			}
+			p=p->next;
+		}	
 		return flag;
+	}
 }
 /* TODO: Implement the functionality of watchpoint */
 
