@@ -70,10 +70,12 @@ void free_wp(WP *wp) {
 }
 
 void list_watchpoint() {
-	WP* p=head->next;
-	if(head==NULL||head->next==NULL)
+	if(head==NULL||head->next==NULL){
 		printf("There is no watchpoint!\n");
+		return;
+	}
 	else {
+		WP* p=head->next;
 		printf("******There is the information of watchpoint******\n");
 		while(p!=NULL) {
 			printf("No.%d   oldvalue:0x%x   newvalue:0x%x   ",p->NO,p->oldvalue,p->newvalue);
