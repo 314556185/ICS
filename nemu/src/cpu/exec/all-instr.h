@@ -28,6 +28,6 @@
 
 #include "misc/misc.h"
 
-//#include "control/call.h"
+#include "control/call.h"
 
 #include "special/special.h"
