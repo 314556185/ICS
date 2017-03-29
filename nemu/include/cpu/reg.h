@@ -30,18 +30,21 @@ typedef struct {
 		};
 	};
 
-	struct {
-		unsigned CF: 1;
-		unsigned PAD1: 1;
-		unsigned PF: 1;
-		unsigned PAD2: 3;
-		unsigned ZF: 1;
-		unsigned SF: 1;
-		unsigned PAD3: 1;
-		unsigned IF: 1;
-		unsigned DF: 1;
-		unsigned OF: 1;
-		unsigned PAD4: 20;
+	union {
+		uint32_t value;
+		struct {
+			unsigned CF: 1;
+			unsigned PAD1: 1;
+			unsigned PF: 1;
+			unsigned PAD2: 3;
+			unsigned ZF: 1;
+			unsigned SF: 1;
+			unsigned PAD3: 1;
+			unsigned IF: 1;
+			unsigned DF: 1;
+			unsigned OF: 1;
+			unsigned PAD4: 20;
+		} bits;
 	}eflags;
 
 } CPU_state;
