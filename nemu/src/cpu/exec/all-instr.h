@@ -14,7 +14,7 @@
 #include "arith/idiv.h"
 #include "arith/div.h"
 
-//#include "logic/test.h"
+#include "logic/test.h"
 #include "logic/and.h"
 #include "logic/or.h"
 #include "logic/not.h"
